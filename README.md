@@ -2,4 +2,4 @@
 # Elizabeth McNaughton
 # Aiden Goen
 # Kaylee Smith
-# Collin Sell
+# Colin Sell
