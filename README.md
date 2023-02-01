@@ -1,5 +1,9 @@
-# ECE-461
-# Elizabeth McNaughton
-# Aiden Goen
-# Kaylee Smith
-# Collin Sell
+# ECE-461 Project
+## Software Engineering at Purdue University
+##
+## Programmers
+### Elizabeth McNaughton
+### Aiden Goen
+### Kaylee Smith
+### Collin Sell
+
