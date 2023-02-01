@@ -1,6 +1,6 @@
 # ECE 461 Project
 
-One Paragraph of the project description
+Our project for ECE 461 (Software Engineering) is
 
 ## Getting Started
 
