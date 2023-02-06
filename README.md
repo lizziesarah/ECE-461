@@ -20,12 +20,16 @@ Executable file in the root directory of your project called "run" that includes
         - “BusFactor”
         - “ResponsiveMaintainer”
         - “License”.
-    - Each score should be in the range [0,1] where 0 indicates total failure and 1
-indicates perfection. The specific operationalizations are up to you, but you must
-provide rationales as part of your documentation.
-    - The “NetScore” should be calculated as [0,1] as well, as a weighted sum. You
-should choose the weights based on Sarah’s priorities, and explain your choice.
+    - Each score should be in the range [0,1] where 0 indicates total failure and 1 indicates perfection. The specific operationalizations are up to you, but you must provide rationales as part of your documentation.
+    - The “NetScore” should be calculated as [0,1] as well, as a weighted sum. You should choose the weights based on Sarah’s priorities, and explain your choice.
     - Should exit 0 on success
+- "./run test", which runs a test suite and exits 0 if everything is working.
+    - The minimum requirement for this test suite is that it contain at least 20 distinct test cases and achieve at least 80% code coverage as measured by line coverage.
+    - The output from this invocation should be a line written to stdout of the form: “X/Y test cases passed. Z% line coverage achieved.”2
+    - Should exit 0 on success.
+- In the event of an error, your program should exit with return code 1, and print a useful error message to the console. Look at the resource on error message design for guidance.
+
+Your software must produce a log file stored in the location named in the environment variable $LOG_FILE and using the verbosity level indicated in the environment variable $LOG_LEVEL (0 means silent, 1 means informational messages, 2 means debug messages). Default log verbosity is 0.
 
 ## Getting Started
 
