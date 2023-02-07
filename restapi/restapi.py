@@ -1,4 +1,4 @@
-# Access token: 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
+# Access token: 
 import requests
 import os
 import re
@@ -13,7 +13,7 @@ def Grab_Credentials(link):
     return owner, repo
 
 def Get_Repo_License(link):
-    token = os.getenv('GITHUB_TOKEN', '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')
+    token = os.getenv('GITHUB_TOKEN', '')
     owner, repo = Grab_Credentials(link)
     query_url = f"https://api.github.com/repos/{owner}/{repo}/license"
     
