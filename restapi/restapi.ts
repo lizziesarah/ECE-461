@@ -26,7 +26,7 @@ async function FetchNPMRepo(name:string) {
 }
 
 // Regexes each link to grab either the user and name for github, or just name for npmjs
-async function RegexLink() {
+function RegexLink() {
     const txt = readFileSync('URL_FILE.txt', 'utf-8');
     const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
 
@@ -49,4 +49,4 @@ async function CheckCompatibility() {
 
 }
 
-console.log(process.argv)
+RegexLink()
