@@ -6,7 +6,7 @@ load_dotenv()
 
 g = Github(os.getenv('GITHUB_TOKEN'))
 
-def query_github():
+def clone_repo():
     n = 0
     with open(r"url_file.txt", "r") as url_file:
         urls = url_file.readlines()
@@ -17,4 +17,4 @@ def query_github():
         os.mkdir(new_dir_name)
         repo = git.Repo.clone_from(url, new_dir_name)
 
-query_github()
+clone_repo()
