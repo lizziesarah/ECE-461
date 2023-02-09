@@ -2,8 +2,8 @@ import requests
 from datetime import date
 
 def getBusFactorScore(username, token, owner, name):
-    username = "lizziesarah"
-    token = "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"
+    #username = "lizziesarah"
+    #token = "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"
     header = {'Authorization': 'Bearer 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'}
 
     owner = '"' + "octocat" + '"'
