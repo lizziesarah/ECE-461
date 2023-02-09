@@ -1,2 +1,1 @@
-./restapi.ts
-echo $1
+if [[ -f $1 ]]; then ./restapi.ts $1; else echo  "Text file not found in directory"; fi

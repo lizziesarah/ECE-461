@@ -6,10 +6,11 @@ async function FetchGithubRepo(owner:string, repo:string) {
     const end = 'https://api.github.com/repos/' + owner + '/' + repo + '/license';
     const res = await fetch(end);
     const data = await res.json();
+    const url = "https://github.com/" + owner + "/" + repo
     try {
-        console.log(data['license']['key'])
+        console.log(data['license']['key'], url)
     } catch(error) {
-        console.log("N/A")
+        console.log("N/A", url)
     }
 }
 
@@ -18,18 +19,18 @@ async function FetchNPMRepo(name:string) {
     const end = 'https://registry.npmjs.org/' + name + '';
     const res = await fetch(end);
     const data = await res.json();
+    const url = "https://www.npmjs.com/package/" + name
     try {
-        console.log(data['license'])
+        console.log(data['license'], url);
     } catch(error) {
-        console.log("N/A")
+        console.log("N/A", url)
     }
 }
 
 // Regexes each link to grab either the user and name for github, or just name for npmjs
-function RegexLink() {
-    const txt = readFileSync('URL_FILE.txt', 'utf-8');
+function RegexLink(textfile:string) {
+    const txt = readFileSync(textfile, 'utf-8');
     const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
-
     if (regex) {
         for(let i = 1; i < regex.length; i = i + 3) {
             if(regex[i-1] == '/github.com') {
@@ -49,4 +50,4 @@ async function CheckCompatibility() {
 
 }
 
-RegexLink()
+RegexLink(process.argv.slice(2)[0])
