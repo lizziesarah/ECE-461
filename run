@@ -1,1 +1,1 @@
-if [[ -f $1 ]]; then ./restapi/restapi.ts $1; else echo  "Text file not found in directory"; fi
+if [[ -f $1 ]]; then ./restapi/restapi.ts $1; elif [[ $1 == 'install' ]]; then npm install ts-node && npm install octokit && npm install readfilesync && pip install requests && echo 'Dependencies installed!'; else echo "Error: Not a supported command, ./run help for list of commands"; fi

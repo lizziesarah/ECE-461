@@ -22,10 +22,13 @@ async function FetchGithubRepo(owner:string, repo:string) {
 
 // This function grabs the license information from an npmjs repository
 async function FetchNPMRepo(name:string) {
+    //
     const end = 'https://registry.npmjs.org/' + name + '';
     const res = await fetch(end);
     const data = await res.json();
     const url = "https://www.npmjs.com/package/" + name
+
+    //
     try {
         console.log(data['license'], url);
         console.log(CheckCompatibility(data['license']))
@@ -37,8 +40,12 @@ async function FetchNPMRepo(name:string) {
 
 // Regexes each link to grab either the user and name for github, or just name for npmjs
 function RegexLink(textfile:string) {
+
+    // read the second argument
     const txt = readFileSync(textfile, 'utf-8');
     const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
+
+    // if there are links within the text file
     if (regex) {
         for(let i = 1; i < regex.length; i = i + 3) {
             if(regex[i-1] == '/github.com') {
