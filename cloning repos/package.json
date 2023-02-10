@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "get-github-url": "^1.0.4",
     "isomorphic-unfetch": "^4.0.2",
     "query-registry": "^2.6.0"
   }
