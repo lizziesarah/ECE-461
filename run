@@ -1,0 +1,14 @@
+if [[ -f $1 ]]; then 
+    ./restapi/restapi.ts $1; 
+elif [[ $1 == 'install' ]]; then 
+    npm install typescript && npm install ts-node && npm install octokit && npm install readfilesync && pip install requests
+    echo ''
+    echo 'All dependencies installed!';
+elif [[ $1 == 'help' ]]; then
+    echo "List of commands:"
+    echo "-- ./run install: Installs all dependencies to run the software, python modules and nodejs modules"
+    echo "-- ./run build: Does any necessary compilation for code (none needed for typescript and python)"
+    echo "-- ./run (path to url_file.txt): Runs the software for all github and npm repositories to give scores, prints to stdout"
+    echo "-- ./run test: runs a list of test urls against given scores based on our metrics and compares how many are correct, and" 
+    echo "               how much line coverage is used";
+else echo "Error: Not a supported command, ./run help for list of commands"; fi

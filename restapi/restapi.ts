@@ -1,35 +1,51 @@
 #!/usr/bin/env ts-node
 import { readFileSync } from 'fs';
+import { Octokit } from "octokit";
+const octokit = new Octokit({ 
+    auth: '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',
+});
 
 // This function grabs the license information for a github repository
 async function FetchGithubRepo(owner:string, repo:string) {
     const end = 'https://api.github.com/repos/' + owner + '/' + repo + '/license';
     const res = await fetch(end);
     const data = await res.json();
+    const url = "https://github.com/" + owner + "/" + repo
     try {
-        console.log(data['license']['key'])
+        console.log(data['license']['key'], url)
+        console.log(CheckCompatibility(data['license']['key']))
     } catch(error) {
-        console.log("N/A")
+        console.log("N/A", url)
+        console.log(CheckCompatibility('N/A'))
     }
 }
 
 // This function grabs the license information from an npmjs repository
 async function FetchNPMRepo(name:string) {
+    //
     const end = 'https://registry.npmjs.org/' + name + '';
     const res = await fetch(end);
     const data = await res.json();
+    const url = "https://www.npmjs.com/package/" + name
+
+    //
     try {
-        console.log(data['license'])
+        console.log(data['license'], url);
+        console.log(CheckCompatibility(data['license']))
     } catch(error) {
-        console.log("N/A")
+        console.log("N/A", url)
+        console.log(CheckCompatibility('N/A'))
     }
 }
 
 // Regexes each link to grab either the user and name for github, or just name for npmjs
-async function RegexLink() {
-    const txt = readFileSync('URL_FILE.txt', 'utf-8');
+function RegexLink(textfile:string) {
+
+    // read the second argument
+    const txt = readFileSync(textfile, 'utf-8');
     const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
 
+    // if there are links within the text file
     if (regex) {
         for(let i = 1; i < regex.length; i = i + 3) {
             if(regex[i-1] == '/github.com') {
@@ -45,8 +61,18 @@ async function RegexLink() {
 
 }
 
-async function CheckCompatibility() {
-
+function CheckCompatibility(license:string) {
+    // These lists of compatible and incompatible licenses are based on documents found online unger the GPL licensing information website, will be linked in readme
+    // If its listed as other, that means that there is a license, but not explicitly stated within the repository and is under a readme.
+    // We were not able to regex readme, so we are assuming that lgpl is compatible as it is more common than not, compatible with licenses
+    let incompatible: Array<string> = ['afl-3.0', 'cc', 'cc0-1.0', 'cc-by-4.0', 'epl-1.0', 'epl-2.0', 'agpl-3.0', 'postgresql', 'N/A']
+    let compatible: Array<string> = ['artistic-2.0', 'bsl-1.0', 'bsd-2-clause', 'bsd-3-clause', 'bsd-3-clause-clear', 'mit', 'MIT', 'wtfpl', 'gpl', 'gpl-2.0', 'gpl-3.0', 'lgpl', 'lgpl-2.1', 'lgpl-3.0', 'isc', 'lppl-1.3c', 'ms-pl', 'mpl-2.0', 'osl-3.0', 'ofl-1.1', 'unlicense', 'zlib', 'ncsa', 'other', 'apache-2.0']
+    // These lists will now compared with the license passed in the parameter to see it is compatible
+    let score = 0.0
+    if (compatible.includes(license)) {
+        score = 1.0
+    }
+    return score
 }
 
-console.log(process.argv)
+RegexLink(process.argv.slice(2)[0])
