@@ -9,7 +9,7 @@ elif [[ $1 == 'build' ]]; then
 else 
     echo "Error: Not a supported command, here are a list of commands:"
     echo "-- ./run install: Installs all dependencies to run the software, python modules and nodejs modules"
-    echo "-- ./run build: Does any necessary compilation for code (none needed for typescript and python)"
+    echo "-- ./run build: Does any necessary compilation for code (Compiles Typescript code to Javascript)"
     echo "-- ./run (path to url_file.txt): Runs the software for all github and npm repositories to give scores, prints to stdout"
     echo "-- ./run test: runs a list of test urls against given scores based on our metrics and compares how many are correct, and" 
     echo "               how much line coverage is used"

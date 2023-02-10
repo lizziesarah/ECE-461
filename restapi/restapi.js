@@ -39,7 +39,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var fs_1 = require("fs");
 var fetch = require('node-fetch');
-//import fetch from 'node-fetch';
 // This function grabs the license information for a github repository
 function FetchGithubRepo(owner, repo) {
     return __awaiter(this, void 0, void 0, function () {
@@ -48,7 +47,12 @@ function FetchGithubRepo(owner, repo) {
             switch (_a.label) {
                 case 0:
                     end = 'https://api.github.com/repos/' + owner + '/' + repo + '/license';
-                    return [4 /*yield*/, fetch(end)];
+                    return [4 /*yield*/, fetch(end, {
+                            method: "GET",
+                            Headers: {
+                                Authorization: 'Bearer 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'
+                            }
+                        })];
                 case 1:
                     res = _a.sent();
                     return [4 /*yield*/, res.json()];
@@ -100,8 +104,12 @@ function FetchNPMRepo(name) {
 // Regexes each link to grab either the user and name for github, or just name for npmjs
 function RegexLink(textfile) {
     // read the second argument
-    var txt = (0, fs_1.readFileSync)(textfile, 'ascii');
-    var regex = txt.match(/(\/){1}([-.\w]+)+/ig);
+    var txt = (0, fs_1.readFileSync)(textfile, 'utf-8');
+    // This code takes the string of ascii encoded url_file and converts it into an array of numbers, which then converts each of those characters to utf-8 format
+    var ascii = txt.split(' ').map(Number);
+    var converted_txt = String.fromCharCode.apply(String, ascii);
+    // regex links to get github or npm, name, and repo
+    var regex = converted_txt.match(/(\/){1}([-.\w]+)+/ig);
     // if there are links within the text file
     if (regex) {
         for (var i = 1; i < regex.length; i = i + 3) {
