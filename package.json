@@ -1,11 +1,15 @@
 {
   "dependencies": {
+    "iconv-lite": "^0.6.3",
     "octokit": "^2.0.14",
     "readfilesync": "^1.1.5",
-    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
-  }, 
+  },
   "scripts": {
-      "start": "node --loader  ts-node/esm restapi.ts"
-  }
+    "start": "node --loader  ts-node/esm restapi.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  },
+  "type": "module"
 }

@@ -1,9 +1,6 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsc
 import { readFileSync } from 'fs';
-import { Octokit } from "octokit";
-const octokit = new Octokit({ 
-    auth: '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',
-});
+const fetch = require('node-fetch')
 
 // This function grabs the license information for a github repository
 async function FetchGithubRepo(owner:string, repo:string) {
@@ -43,7 +40,13 @@ function RegexLink(textfile:string) {
 
     // read the second argument
     const txt = readFileSync(textfile, 'utf-8');
-    const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
+
+    // This code takes the string of ascii encoded url_file and converts it into an array of numbers, which then converts each of those characters to utf-8 format
+    var ascii = txt.split(' ').map(Number);
+    const converted_txt = String.fromCharCode(...ascii)
+
+    // regex links to get github or npm, name, and repo
+    const regex =  converted_txt.match(/(\/){1}([-.\w]+)+/ig);
 
     // if there are links within the text file
     if (regex) {
@@ -62,6 +65,7 @@ function RegexLink(textfile:string) {
 }
 
 function CheckCompatibility(license:string) {
+
     // These lists of compatible and incompatible licenses are based on documents found online unger the GPL licensing information website, will be linked in readme
     // If its listed as other, that means that there is a license, but not explicitly stated within the repository and is under a readme.
     // We were not able to regex readme, so we are assuming that lgpl is compatible as it is more common than not, compatible with licenses
