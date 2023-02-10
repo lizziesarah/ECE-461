@@ -1,9 +1,11 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsc
 import { readFileSync } from 'fs';
-import { Octokit } from "octokit";
-const octokit = new Octokit({ 
-    auth: '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',
-});
+import fetch from 'node-fetch';
+
+
+//const octokit = new Octokit({ 
+//    auth: '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',
+//});
 
 // This function grabs the license information for a github repository
 async function FetchGithubRepo(owner:string, repo:string) {
@@ -42,7 +44,7 @@ async function FetchNPMRepo(name:string) {
 function RegexLink(textfile:string) {
 
     // read the second argument
-    const txt = readFileSync(textfile, 'utf-8');
+    const txt = readFileSync(textfile, 'ascii');
     const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
 
     // if there are links within the text file
