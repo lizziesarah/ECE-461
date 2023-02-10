@@ -38,10 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var fs_1 = require("fs");
-var node_fetch_1 = require("node-fetch");
-//const octokit = new Octokit({ 
-//    auth: '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',
-//});
+var fetch = require('node-fetch');
+//import fetch from 'node-fetch';
 // This function grabs the license information for a github repository
 function FetchGithubRepo(owner, repo) {
     return __awaiter(this, void 0, void 0, function () {
@@ -50,7 +48,7 @@ function FetchGithubRepo(owner, repo) {
             switch (_a.label) {
                 case 0:
                     end = 'https://api.github.com/repos/' + owner + '/' + repo + '/license';
-                    return [4 /*yield*/, (0, node_fetch_1["default"])(end)];
+                    return [4 /*yield*/, fetch(end)];
                 case 1:
                     res = _a.sent();
                     return [4 /*yield*/, res.json()];
@@ -78,7 +76,7 @@ function FetchNPMRepo(name) {
             switch (_a.label) {
                 case 0:
                     end = 'https://registry.npmjs.org/' + name + '';
-                    return [4 /*yield*/, (0, node_fetch_1["default"])(end)];
+                    return [4 /*yield*/, fetch(end)];
                 case 1:
                     res = _a.sent();
                     return [4 /*yield*/, res.json()];

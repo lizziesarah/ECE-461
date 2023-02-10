@@ -1,11 +1,6 @@
 #!/usr/bin/env tsc
 import { readFileSync } from 'fs';
-import fetch from 'node-fetch';
-
-
-//const octokit = new Octokit({ 
-//    auth: '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',
-//});
+const fetch = require('node-fetch')
 
 // This function grabs the license information for a github repository
 async function FetchGithubRepo(owner:string, repo:string) {
