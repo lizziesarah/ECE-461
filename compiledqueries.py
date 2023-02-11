@@ -3,6 +3,9 @@ from datetime import date
 
 # https://github.com/octocat/Hello-World
 
+
+# takes in a file with GitHub urls
+# returns a dictionary mapping owners and repository names
 def readFile(urlfile):
     owners_and_names = {}
     file_pointer = open(urlfile, "r")
@@ -10,18 +13,17 @@ def readFile(urlfile):
     for line in file_pointer.readlines():
         owner = ""
         name = ""
-        # its a github file
-        i=19
+        # read in name and owner from GitHub url
+        i = 19
         if line[8] == 'g':
             while line[i] != '/':
                 owner += line[i]
-                i+=1
+                i += 1
             name = line[i+1:]
+        if owner != "":
+            owners_and_names[owner] = name.strip('\n')
 
-
-
-        owners_and_names[owner] = name.strip('\n')
-        return owners_and_names
+    return owners_and_names
 
 
 def getBusFactorScore(username, token, owner, name):
@@ -49,6 +51,7 @@ def getBusFactorScore(username, token, owner, name):
 
     return score
 
+# measures correctness score by seeing how many users have starred a repository (1 if more than 100 stars, else 0)
 def getCorrectnessScore(username, token, owner, name) :
     #username = "lizziesarah"
     #token = "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"
@@ -65,18 +68,13 @@ def getCorrectnessScore(username, token, owner, name) :
 
     number_of_stars = result['data']['repository']['stargazerCount']
 
-    score = 0
-    if number_of_stars > 5:
-        score=1
+    if number_of_stars > 100:
         return 1
     else:
         return 0
 
+# measures responsive maintainers score by seeing if there have been commits within the last year (0 or 1)
 def getResponsiveMaintainersScore(username, token, owner, name):
-    #username = "lizziesarah"
-    #token = "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"
-    # header = {'Authorization': f'Bearer {token}'}
-
     owner = '"' + f"{owner}" + '"'
     name = '"' + f"{name}" + '"'
     master = '"' + "master" + '"'
@@ -112,14 +110,54 @@ def getResponsiveMaintainersScore(username, token, owner, name):
     #print(f"Responsive Maintainers: {rm_score}")
     return(rm_score)
 
+def getLicenseScore(name, owner, file):
+    file_pointer = open(file, "r")
+
+    for line in file_pointer.readlines():
+
+        split = (line.split(" "))
+        url = split[0]
+        score = split[1].split('\n')
+        #score = split[1].split('\n')
+        if url[8] == 'w':
+            if url[30:] == name:
+                return float(score[0])
+        else:
+            i = 19
+            o = ""
+            while line[i] != '/':
+                o += line[i]
+                i += 1
+
+            if o == owner:
+                return float(score[0])
+
+def getRampUpScore(name, owner, file):
+    file_pointer = open(file, "r")
+    for line in file_pointer.readlines():
+        split = (line.split(" "))
+        score = split[1].split('\n')
+        i = 19
+        o = ""
+        while line[i] != '/':
+            o += line[i]
+            i += 1
+        if o == owner:
+            return float(score[0])
+
+
+
+
 def finalScore(bf, lc, cr, ru, rm, outfile):
     score = (bf*4+lc*4+cr*3+ru*2+rm*1) / 14
     score_truncated = round(score, 3)
     outfile_pointer = open(outfile, "a")
-    outfile_pointer.write(f'\n\t' + '{' + f'\n\t\tCorrectness: {cr}\n' + '\t}')
+    outfile_pointer.write(f'[\n\t' + '{' + f'\n\t\tCorrectness: {cr}\n' + '\t}')
     outfile_pointer.write(f'\n\t' + '{' + f'\n\t\tResponsive Maintainers: {rm}\n' + '\t}')
     outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tBus Factor: {bf}\n'+'\t}')
-    outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tTotal Score: {score_truncated}\n'+'\t}'+'\n]')
+    outfile_pointer.write(f'\n\t' + '{' + f'\n\t\tLicense Compatibility: {lc}\n' + '\t}')
+    outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tRamp-Up Time: {ru}\n'+'\t}')
+    outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tTotal Score: {score_truncated}\n'+'\t}'+'\n]\n')
     outfile_pointer.close()
     return score
 
@@ -131,6 +169,8 @@ if __name__ == '__main__':
         cr = getCorrectnessScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
         rm = getResponsiveMaintainersScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
         bf = getBusFactorScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
-        finalScore(bf=bf, cr=cr, rm=rm, lc=0, ru=0, outfile='outfile.txt')
+        lc = getLicenseScore(name=owners_and_names[owner], owner=owner, file='inputfile.txt')
+        ru = getRampUpScore(name=owners_and_names[owner], owner=owner, file='inputfile.txt')
+        finalScore(bf=bf, cr=cr, rm=rm, lc=lc, ru=ru, outfile='outfile.txt')
 
 
