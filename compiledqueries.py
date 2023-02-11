@@ -8,6 +8,7 @@ from datetime import date
 # returns a dictionary mapping owners and repository names
 def readFile(urlfile):
     owners_and_names = {}
+    owners_and_urls = {}
     file_pointer = open(urlfile, "r")
 
     for line in file_pointer.readlines():
@@ -22,8 +23,8 @@ def readFile(urlfile):
             name = line[i+1:]
         if owner != "":
             owners_and_names[owner] = name.strip('\n')
-
-    return owners_and_names
+            owners_and_urls[owner] = line.strip('\n')
+    return owners_and_names, owners_and_urls
 
 
 def getBusFactorScore(username, token, owner, name):
@@ -148,29 +149,32 @@ def getRampUpScore(name, owner, file):
 
 
 
-def finalScore(bf, lc, cr, ru, rm, outfile):
+def finalScore(bf, lc, cr, ru, rm, owner_url, outfile):
     score = (bf*4+lc*4+cr*3+ru*2+rm*1) / 14
     score_truncated = round(score, 3)
     outfile_pointer = open(outfile, "a")
-    outfile_pointer.write(f'[\n\t' + '{' + f'\n\t\tCorrectness: {cr}\n' + '\t}')
-    outfile_pointer.write(f'\n\t' + '{' + f'\n\t\tResponsive Maintainers: {rm}\n' + '\t}')
-    outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tBus Factor: {bf}\n'+'\t}')
-    outfile_pointer.write(f'\n\t' + '{' + f'\n\t\tLicense Compatibility: {lc}\n' + '\t}')
-    outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tRamp-Up Time: {ru}\n'+'\t}')
-    outfile_pointer.write(f'\n\t'+'{'+f'\n\t\tTotal Score: {score_truncated}\n'+'\t}'+'\n]\n')
+    
+    url = '"'+'URL'+'"'
+    net = '"'+'NET_SCORE'+'"'
+    rampup = '"'+'RAMP_UP_SCORE'+'"'
+    correct = '"'+'CORRECTNESS_SCORE'+'"'
+    busfactor = '"'+'BUS_FACTOR_SCORE'+'"'
+    respmaint = '"'+'RESPONSIVE_MAINTAINER_SCORE'+'"'
+    licen = '"'+'LICENSE_SCORE'+'"'
+    outfile_pointer.write("{"+f"{url}:{owner_url}, {net}:{score}, {rampup}:{ru}, {correct}:{cr}, {busfactor}:{bf}, {respmaint}:{rm}, {licen}:{lc}"+"}\n")
     outfile_pointer.close()
     return score
 
 
 if __name__ == '__main__':
     owners_and_names = {}
-    owners_and_names = readFile(urlfile='urlfile_actual.txt')
+    owners_and_names, owners_and_urls = readFile(urlfile='cloning_repos/git_urls.txt')
     for owner in owners_and_names:
         cr = getCorrectnessScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
         rm = getResponsiveMaintainersScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
         bf = getBusFactorScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
-        lc = getLicenseScore(name=owners_and_names[owner], owner=owner, file='inputfile.txt')
-        ru = getRampUpScore(name=owners_and_names[owner], owner=owner, file='inputfile.txt')
-        finalScore(bf=bf, cr=cr, rm=rm, lc=lc, ru=ru, outfile='outfile.txt')
+        lc = getLicenseScore(name=owners_and_names[owner], owner=owner, file='license.txt')
+        ru = getRampUpScore(name=owners_and_names[owner], owner=owner, file='rampup_time.txt')
+        finalScore(bf=bf, cr=cr, rm=rm, lc=lc, ru=ru, owner_url=owners_and_urls[owner], outfile='outfile.txt')
 
 
