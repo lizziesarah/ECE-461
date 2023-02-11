@@ -1,5 +1,5 @@
-https://github.com/lodash/lodash 0.0
-https://github.com/cloudinary/cloudinary_npm 0.0
-https://github.com/nullivex/nodist 0.0
 https://www.npmjs.com/package/express 1.0
+https://github.com/cloudinary/cloudinary_npm 0.0
+https://github.com/nullivex/nodist 1.0
+https://github.com/lodash/lodash 1.0
 https://www.npmjs.com/package/browserify 1.0

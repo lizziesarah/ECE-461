@@ -1,5 +1,5 @@
 if [[ -f $1 ]]; then 
-    node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1 && python3 ./cloning_repos/github_query_clone.py; 
+    node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1 && python3 ./cloning_repos/github_query_clone.py && rm ./cloning_repos/git_urls.txt && rm -r -f ./cloning_repos/cloned_repo*; 
 elif [[ $1 == 'install' ]]; then 
     npm install typescript && npm install ts-node && npm install octokit && npm install readfilesync && pip install requests && pip install gitpython
     echo ''

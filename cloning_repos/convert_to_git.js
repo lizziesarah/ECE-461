@@ -70,7 +70,7 @@ function change_to_git(url_path) {
                     data = _a.sent();
                     new_reg = data['bugs']['url'].match(/(\/){1}([-.\w]+)+/ig);
                     url = 'https:/' + new_reg[0] + new_reg[1] + new_reg[2] + '\n';
-                    (0, fs_1.appendFile)('git_urls.txt', url, function (err) {
+                    (0, fs_1.appendFile)('cloning_repos/git_urls.txt', url, function (err) {
                         if (err)
                             throw err;
                     });
