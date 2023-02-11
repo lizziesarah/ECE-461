@@ -1,6 +1,7 @@
 from github import Github
 import git
 import os
+import sys
 from dotenv import load_dotenv
 from os.path import exists
 load_dotenv()
@@ -31,5 +32,5 @@ def clone_repo():
                 if split[4] == registry_name:
                     print(repo.clone_url)
                     break
-            
-clone_repo()
+    
+    sys.print('cloc', registry_name)
