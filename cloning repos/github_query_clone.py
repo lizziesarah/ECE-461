@@ -1,6 +1,5 @@
 import git
 import os
-from dotenv import load_dotenv
 from os.path import exists
 
 def clone_repo():
@@ -17,14 +16,6 @@ def clone_repo():
         if readme_exists:
             rampup_time = 1
         else:
-            registry_name = url_split[4]
-            query = registry_name + '+in:readme+in:description'
-            repos = g.search_repositories(query, 'stars', 'desc')
-            for repo in repos:
-                split = repo.clone_url.split('/')
-                print(repo.clone_url)
-                if split[4] == registry_name:
-                    print(repo.clone_url)
-                    break
+            rampup_time = 0
             
 clone_repo()
