@@ -95,6 +95,6 @@ Node.js is available under the MIT license. Node.js also includes external libra
 
 ## Acknowledgments
 
-  - Hat tip to anyone whose code is used
-  - Inspiration
+  - stackoverflow
+  - TA in office hours
 
