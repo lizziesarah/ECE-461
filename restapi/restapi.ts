@@ -1,5 +1,7 @@
 #!/usr/bin/env tsc
 import { readFileSync } from 'fs';
+import { writeFileSync } from 'fs';
+import { appendFile } from 'fs';
 const fetch = require('node-fetch')
 
 // This function grabs the license information for a github repository
@@ -8,30 +10,46 @@ async function FetchGithubRepo(owner:string, repo:string) {
     const res = await fetch(end);
     const data = await res.json();
     const url = "https://github.com/" + owner + "/" + repo
+    let newline = "\n"
+    let space = " ";
     try {
-        console.log(data['license']['key'], url)
-        console.log(CheckCompatibility(data['license']['key']))
+        var score = CheckCompatibility(data['license']['key'])
+        var new_score = score.toFixed(1)
+        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+            if (err) throw (err);
+        });
     } catch(error) {
-        console.log("N/A", url)
-        console.log(CheckCompatibility('N/A'))
+        var score = CheckCompatibility('N/A')
+        var new_score = score.toFixed(1)
+        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+            if (err) throw (err);
+        });
     }
 }
 
 // This function grabs the license information from an npmjs repository
 async function FetchNPMRepo(name:string) {
-    //
     const end = 'https://registry.npmjs.org/' + name + '';
     const res = await fetch(end);
     const data = await res.json();
     const url = "https://www.npmjs.com/package/" + name
+    let newline = "\n"
+    let space = " ";
 
-    //
     try {
-        console.log(data['license'], url);
-        console.log(CheckCompatibility(data['license']))
+        var score = CheckCompatibility(data['license'])
+        var new_score = score.toFixed(1)
+        //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
+        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+            if (err) throw (err);
+        });
     } catch(error) {
-        console.log("N/A", url)
-        console.log(CheckCompatibility('N/A'))
+        var score = CheckCompatibility('N/A')
+        var new_score = score.toFixed(1)
+        //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
+        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+            if (err) throw (err);
+        })
     }
 }
 
@@ -41,12 +59,8 @@ function RegexLink(textfile:string) {
     // read the second argument
     const txt = readFileSync(textfile, 'utf-8');
 
-    // This code takes the string of ascii encoded url_file and converts it into an array of numbers, which then converts each of those characters to utf-8 format
-    var ascii = txt.split(' ').map(Number);
-    const converted_txt = String.fromCharCode(...ascii)
-
     // regex links to get github or npm, name, and repo
-    const regex =  converted_txt.match(/(\/){1}([-.\w]+)+/ig);
+    const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
 
     // if there are links within the text file
     if (regex) {
@@ -71,6 +85,7 @@ function CheckCompatibility(license:string) {
     // We were not able to regex readme, so we are assuming that lgpl is compatible as it is more common than not, compatible with licenses
     let incompatible: Array<string> = ['afl-3.0', 'cc', 'cc0-1.0', 'cc-by-4.0', 'epl-1.0', 'epl-2.0', 'agpl-3.0', 'postgresql', 'N/A']
     let compatible: Array<string> = ['artistic-2.0', 'bsl-1.0', 'bsd-2-clause', 'bsd-3-clause', 'bsd-3-clause-clear', 'mit', 'MIT', 'wtfpl', 'gpl', 'gpl-2.0', 'gpl-3.0', 'lgpl', 'lgpl-2.1', 'lgpl-3.0', 'isc', 'lppl-1.3c', 'ms-pl', 'mpl-2.0', 'osl-3.0', 'ofl-1.1', 'unlicense', 'zlib', 'ncsa', 'other', 'apache-2.0']
+    
     // These lists will now compared with the license passed in the parameter to see it is compatible
     let score = 0.0
     if (compatible.includes(license)) {
