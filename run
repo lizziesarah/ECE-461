@@ -1,7 +1,7 @@
 if [[ -f $1 ]]; then 
-    node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1; 
+    node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1 && python3 ./cloning_repos/github_query_clone.py && rmdir cloned_repo1; 
 elif [[ $1 == 'install' ]]; then 
-    npm install typescript && npm install ts-node && npm install octokit && npm install readfilesync && pip install requests
+    npm install typescript && npm install ts-node && npm install octokit && npm install readfilesync && pip install requests && pip install gitpython
     echo ''
     echo 'All dependencies installed!';
 elif [[ $1 == 'build' ]]; then
