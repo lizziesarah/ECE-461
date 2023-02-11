@@ -1,6 +1,5 @@
 #!/usr/bin/env tsc
 import { readFileSync } from 'fs';
-import { writeFileSync } from 'fs';
 import { appendFile } from 'fs';
 const fetch = require('node-fetch')
 

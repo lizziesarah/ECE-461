@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env tsc
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -39,13 +39,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var fs_1 = require("fs");
 var fetch = require('node-fetch');
-function change_to_git() {
+function change_to_git(url_path) {
     return __awaiter(this, void 0, void 0, function () {
         var txt, regex, i, url, repo_name, registry, res, data, new_reg, url;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    txt = (0, fs_1.readFileSync)('url_file.txt', 'utf-8');
+                    txt = (0, fs_1.readFileSync)(url_path, 'utf-8');
                     regex = txt.match(/(\/){1}([-.\w]+)+/ig);
                     if (!regex) return [3 /*break*/, 6];
                     i = 0;
@@ -54,7 +54,7 @@ function change_to_git() {
                     if (!(i < regex.length)) return [3 /*break*/, 6];
                     if (!(regex[i] == '/github.com')) return [3 /*break*/, 2];
                     url = 'https:/' + regex[i] + regex[i + 1] + regex[i + 2] + '\n';
-                    (0, fs_1.appendFile)('git_urls.txt', url, function (err) {
+                    (0, fs_1.appendFile)('cloning_repos/git_urls.txt', url, function (err) {
                         if (err)
                             throw err;
                     });
@@ -83,4 +83,4 @@ function change_to_git() {
         });
     });
 }
-change_to_git();
+change_to_git(process.argv.slice(2)[0]);

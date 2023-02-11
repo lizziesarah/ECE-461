@@ -1,14 +1,14 @@
 if [[ -f $1 ]]; then 
-    node ./restapi/restapi.js $1; 
+    node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1; 
 elif [[ $1 == 'install' ]]; then 
     npm install typescript && npm install ts-node && npm install octokit && npm install readfilesync && pip install requests
     echo ''
     echo 'All dependencies installed!';
 elif [[ $1 == 'build' ]]; then
-    ./restapi/restapi.ts
+    ./restapi/restapi.ts && ./cloning_repos/convert_to_git.ts
 else 
     echo "Error: Not a supported command, here are a list of commands:"
-    echo "-- ./run install: Installs all dependencies to run the software, python modules and nodejs modules"
+    echo "-- ./run install: Installs all dependencies to run the software, python modules, nodejs modules, and typescript modules"
     echo "-- ./run build: Does any necessary compilation for code (Compiles Typescript code to Javascript)"
     echo "-- ./run (path to url_file.txt): Runs the software for all github and npm repositories to give scores, prints to stdout"
     echo "-- ./run test: runs a list of test urls against given scores based on our metrics and compares how many are correct, and" 
