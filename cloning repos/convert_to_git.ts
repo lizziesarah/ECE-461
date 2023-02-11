@@ -1,5 +1,5 @@
 #!/usr/bin/env ts-node
-import { readFileSync, appendFile, writeFileSync } from 'fs';
+import { readFileSync, appendFile } from 'fs';
 const fetch = require('node-fetch');
 
 async function change_to_git()
