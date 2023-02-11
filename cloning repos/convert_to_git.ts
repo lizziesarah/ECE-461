@@ -2,9 +2,9 @@
 import { readFileSync, appendFile } from 'fs';
 const fetch = require('node-fetch');
 
-async function change_to_git()
+async function change_to_git(url_path: string)
 {
-    const txt = readFileSync('url_file.txt', 'utf-8');
+    const txt = readFileSync(url_path, 'utf-8');
     const regex =  txt.match(/(\/){1}([-.\w]+)+/ig);
     if(regex) 
     {
@@ -33,4 +33,4 @@ async function change_to_git()
     }
 }
 
-change_to_git();
+change_to_git(process.argv.slice(2)[0]);

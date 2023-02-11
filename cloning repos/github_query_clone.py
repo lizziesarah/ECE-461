@@ -18,8 +18,6 @@ def clone_repo():
         else:
             rampup_time = 0
     
-        cloc = 'cloc'
         os.system(cloc)
-        #os.system(repo)
             
 clone_repo()
