@@ -55,30 +55,21 @@ Download any software application that has a command-line interface
 
 Run the module on the command-line to determine the score of the module
 
-    write command ehre
-
-End with an example of getting some data out of the system or using it
-for a little demo
-
 ## Running the tests
 
-Explain how to run the automated tests for this system
+To run the tests, write the following in terminal:
+    
+    ./run install
+    ./run build
+    ./run URL_FILE
+    ./run test
 
 ### Sample Tests
 
-Explain what these tests test and why
+The sample tests are a selection of different repository URLs that are then pushed through the grading software and given a score.
 
-    Give an example
+    https://github.com/996icu/996.ICU = 0.97/1
 
-### Style test
-
-Checks if the best practices and the right coding style has been used.
-
-    Give an example
-
-## Deployment
-
-Add additional notes to deploy this on a live system
 
 ## Built With
 
@@ -104,6 +95,6 @@ Node.js is available under the MIT license. Node.js also includes external libra
 
 ## Acknowledgments
 
-  - Hat tip to anyone whose code is used
-  - Inspiration
+  - stackoverflow
+  - TA in office hours
 
