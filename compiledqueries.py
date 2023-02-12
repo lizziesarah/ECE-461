@@ -150,7 +150,8 @@ def getRampUpScore(name, owner, file):
 
 
 def finalScore(bf, lc, cr, ru, rm, owner_url, outfile):
-    score = (bf*4+lc*4+cr*3+ru*2+rm*1) / 14
+    score = (bf*4+cr*3+ru*2+rm*1) / 14
+    score *= lc
     score_truncated = round(score, 3)
     outfile_pointer = open(outfile, "a")
     
