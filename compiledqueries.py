@@ -1,8 +1,11 @@
 import requests
 from datetime import date
+import os
 
 
 # https://github.com/octocat/Hello-World
+token = os.environ['GITHUB_TOKEN']
+header = {'Authorization': 'Bearer {}'.format(token)}
 
 
 # takes in a file with GitHub urls
@@ -28,10 +31,9 @@ def readFile(urlfile):
     return owners_and_names, owners_and_urls
 
 
-def getBusFactorScore(username, token, owner, name):
+def getBusFactorScore(owner, name):
     # username = "lizziesarah"
     # token = "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"
-    header = {'Authorization': 'Bearer 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'}
 
     owner = '"' + f"{owner}" + '"'
     name = '"' + f"{name}" + '"'
@@ -39,7 +41,7 @@ def getBusFactorScore(username, token, owner, name):
     query1 = "{\n" + f"\trepository(owner: {owner}, name: {name})\n" + "\t{ mentionableUsers{\n\ttotalCount\n}\n}\n}"
 
     # req=requests.get(url='https://api.github.com/graphql', auth=(username,token)) headers=header
-    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, auth=(username, token))
+    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, headers=header)
 
     result = req.json()
 
@@ -55,10 +57,9 @@ def getBusFactorScore(username, token, owner, name):
 
 
 # measures correctness score by seeing how many users have starred a repository (1 if more than 100 stars, else 0)
-def getCorrectnessScore(username, token, owner, name):
+def getCorrectnessScore(owner, name):
     # username = "lizziesarah"
     # token = "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"
-    header = {'Authorization': 'Bearer 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'}
 
     owner = '"' + f"{owner}" + '"'
     name = '"' + f"{name}" + '"'
@@ -66,7 +67,7 @@ def getCorrectnessScore(username, token, owner, name):
     query1 = "{\n" + f"\trepository(owner: {owner}, name: {name})" + " { \n\t\tstargazerCount }}"
 
     # req=requests.get(url='https://api.github.com/graphql', auth=(username,token)) headers=header
-    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, auth=(username, token))
+    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, headers=header)
     result = req.json()
 
     number_of_stars = result['data']['repository']['stargazerCount']
@@ -78,10 +79,11 @@ def getCorrectnessScore(username, token, owner, name):
 
 
 # measures responsive maintainers score by seeing if there have been commits within the last year (0 or 1)
-def getResponsiveMaintainersScore(username, token, owner, name):
+def getResponsiveMaintainersScore(owner, name):
     owner = '"' + f"{owner}" + '"'
     name = '"' + f"{name}" + '"'
     master = '"' + "master" + '"'
+
 
     # create github timestamp of last year's date
     todaysDateDateTime = date.today()
@@ -103,7 +105,7 @@ def getResponsiveMaintainersScore(username, token, owner, name):
 
     query1 = "{\n" + f"\trepository(owner: {owner}, name: {name})" + " { \n" + "\t ref(qualifiedName:" + f" {master})" + " { " + "\n\t\ttarget { \n\t\t ... on Commit {\n\t" + f"history(since:{gts})" + "{" + "\n\t\ttotalCount}}}}}\n\t\t}"
 
-    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, auth=(username, token))
+    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, headers=header)
     result = req.json()
 
     numCommits = result['data']['repository']['ref']['target']['history']['totalCount']
@@ -190,13 +192,13 @@ if __name__ == '__main__':
     urls_ranked_by_score = {}
     attributes_of_url = {}
     #owners_and_names, owners_and_urls = readFile(urlfile='cloning_repos/git_urls.txt')
-    owners_and_names, owners_and_urls = readFile(urlfile='urlfile_actual.txt')
+    owners_and_names, owners_and_urls = readFile(urlfile='cloning_repos/git_urls.txt')
     for owner in owners_and_names:
-        cr = getCorrectnessScore(username='lizziesarah', token='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', owner=owner,
+        cr = getCorrectnessScore(owner=owner,
                                  name=owners_and_names[owner])
-        rm = getResponsiveMaintainersScore(username='lizziesarah', token='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',
+        rm = getResponsiveMaintainersScore(
                                            owner=owner, name=owners_and_names[owner])
-        bf = getBusFactorScore(username='lizziesarah', token='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', owner=owner,
+        bf = getBusFactorScore(owner=owner,
                                name=owners_and_names[owner])
         lc = getLicenseScore(name=owners_and_names[owner], owner=owner, file='license.txt')
         ru = getRampUpScore(name=owners_and_names[owner], owner=owner, file='rampup_time.txt')

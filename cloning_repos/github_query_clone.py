@@ -18,7 +18,7 @@ def clone_repo():
             rampup_time = 1
         else:
             rampup_time = 0
-        readme_list = url + " " + str("{:.1f}".format(rampup_time)) + "\n"
+        readme_list = url + " " + str(rampup_time) + "\n"
         
         with open("rampup_time.txt", "a") as rampup_file:
             rampup_file.write(readme_list)

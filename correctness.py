@@ -2,7 +2,7 @@ import requests
 
 
 
-def getCorrectnessScore(username, token, owner, name) :
+def getCorrectnessScore(token, owner, name) :
     #username = "lizziesarah"
     #token = "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"
     header = {'Authorization': 'Bearer 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'}
@@ -13,7 +13,7 @@ def getCorrectnessScore(username, token, owner, name) :
     query1 = "{\n" + f"\trepository(owner: {owner}, name: {name})" + " { \n\t\tstargazerCount }}"
 
     # req=requests.get(url='https://api.github.com/graphql', auth=(username,token)) headers=header
-    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, auth=(username, token))
+    req = requests.post(url='https://api.github.com/graphql', json={'query': query1}, headers=header)
     result = req.json()
 
     number_of_stars = result['data']['repository']['stargazerCount']

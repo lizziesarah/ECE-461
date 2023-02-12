@@ -13,14 +13,14 @@ async function FetchGithubRepo(owner:string, repo:string) {
     let space = " ";
     try {
         var score = CheckCompatibility(data['license']['key'])
-        var new_score = score.toFixed(1)
-        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+        //var new_score = score.toFixed(1)
+        appendFile("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function(err) {
             if (err) throw (err);
         });
     } catch(error) {
         var score = CheckCompatibility('N/A')
-        var new_score = score.toFixed(1)
-        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+        //var new_score = score.toFixed(1)
+        appendFile("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function(err) {
             if (err) throw (err);
         });
     }
@@ -37,16 +37,16 @@ async function FetchNPMRepo(name:string) {
 
     try {
         var score = CheckCompatibility(data['license'])
-        var new_score = score.toFixed(1)
+        //var new_score = score.toFixed(1)
         //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
-        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+        appendFile("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function(err) {
             if (err) throw (err);
         });
     } catch(error) {
         var score = CheckCompatibility('N/A')
-        var new_score = score.toFixed(1)
+        //var new_score = score.toFixed(1)
         //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
-        appendFile("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function(err) {
+        appendFile("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function(err) {
             if (err) throw (err);
         })
     }
@@ -86,9 +86,9 @@ function CheckCompatibility(license:string) {
     let compatible: Array<string> = ['artistic-2.0', 'bsl-1.0', 'bsd-2-clause', 'bsd-3-clause', 'bsd-3-clause-clear', 'mit', 'MIT', 'wtfpl', 'gpl', 'gpl-2.0', 'gpl-3.0', 'lgpl', 'lgpl-2.1', 'lgpl-3.0', 'isc', 'lppl-1.3c', 'ms-pl', 'mpl-2.0', 'osl-3.0', 'ofl-1.1', 'unlicense', 'zlib', 'ncsa', 'other', 'apache-2.0']
     
     // These lists will now compared with the license passed in the parameter to see it is compatible
-    let score = 0.0
+    let score = 0
     if (compatible.includes(license)) {
-        score = 1.0
+        score = 1
     }
     return score
 }

@@ -43,7 +43,7 @@ var fetch = require('node-fetch');
 // This function grabs the license information for a github repository
 function FetchGithubRepo(owner, repo) {
     return __awaiter(this, void 0, void 0, function () {
-        var end, res, data, url, newline, space, score, new_score, score, new_score;
+        var end, res, data, url, newline, space, score, score;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -59,16 +59,16 @@ function FetchGithubRepo(owner, repo) {
                     space = " ";
                     try {
                         score = CheckCompatibility(data['license']['key']);
-                        new_score = score.toFixed(1);
-                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function (err) {
+                        //var new_score = score.toFixed(1)
+                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
                                 throw (err);
                         });
                     }
                     catch (error) {
                         score = CheckCompatibility('N/A');
-                        new_score = score.toFixed(1);
-                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function (err) {
+                        //var new_score = score.toFixed(1)
+                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
                                 throw (err);
                         });
@@ -81,7 +81,7 @@ function FetchGithubRepo(owner, repo) {
 // This function grabs the license information from an npmjs repository
 function FetchNPMRepo(name) {
     return __awaiter(this, void 0, void 0, function () {
-        var end, res, data, url, newline, space, score, new_score, score, new_score;
+        var end, res, data, url, newline, space, score, score;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -97,18 +97,18 @@ function FetchNPMRepo(name) {
                     space = " ";
                     try {
                         score = CheckCompatibility(data['license']);
-                        new_score = score.toFixed(1);
+                        //var new_score = score.toFixed(1)
                         //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
-                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function (err) {
+                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
                                 throw (err);
                         });
                     }
                     catch (error) {
                         score = CheckCompatibility('N/A');
-                        new_score = score.toFixed(1);
+                        //var new_score = score.toFixed(1)
                         //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
-                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), new_score.toString(), newline.toString()), function (err) {
+                        (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
                                 throw (err);
                         });
@@ -146,9 +146,9 @@ function CheckCompatibility(license) {
     var incompatible = ['afl-3.0', 'cc', 'cc0-1.0', 'cc-by-4.0', 'epl-1.0', 'epl-2.0', 'agpl-3.0', 'postgresql', 'N/A'];
     var compatible = ['artistic-2.0', 'bsl-1.0', 'bsd-2-clause', 'bsd-3-clause', 'bsd-3-clause-clear', 'mit', 'MIT', 'wtfpl', 'gpl', 'gpl-2.0', 'gpl-3.0', 'lgpl', 'lgpl-2.1', 'lgpl-3.0', 'isc', 'lppl-1.3c', 'ms-pl', 'mpl-2.0', 'osl-3.0', 'ofl-1.1', 'unlicense', 'zlib', 'ncsa', 'other', 'apache-2.0'];
     // These lists will now compared with the license passed in the parameter to see it is compatible
-    var score = 0.0;
+    var score = 0;
     if (compatible.includes(license)) {
-        score = 1.0;
+        score = 1;
     }
     return score;
 }
