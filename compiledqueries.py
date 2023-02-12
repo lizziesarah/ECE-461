@@ -1,6 +1,7 @@
 import requests
 from datetime import date
 
+
 # https://github.com/octocat/Hello-World
 
 
@@ -20,7 +21,7 @@ def readFile(urlfile):
             while line[i] != '/':
                 owner += line[i]
                 i += 1
-            name = line[i+1:]
+            name = line[i + 1:]
         if owner != "":
             owners_and_names[owner] = name.strip('\n')
             owners_and_urls[owner] = line.strip('\n')
@@ -28,8 +29,8 @@ def readFile(urlfile):
 
 
 def getBusFactorScore(username, token, owner, name):
-    #username = "lizziesarah"
-    #token = "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"
+    # username = "lizziesarah"
+    # token = "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"
     header = {'Authorization': 'Bearer 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'}
 
     owner = '"' + f"{owner}" + '"'
@@ -47,15 +48,16 @@ def getBusFactorScore(username, token, owner, name):
         score = 1
     else:
         score = numContributors / 5
-    #print(f"Number of contributors: {numContributors}")
-    #print(f"Bus Factor: {score}")
+    # print(f"Number of contributors: {numContributors}")
+    # print(f"Bus Factor: {score}")
 
     return score
 
+
 # measures correctness score by seeing how many users have starred a repository (1 if more than 100 stars, else 0)
-def getCorrectnessScore(username, token, owner, name) :
-    #username = "lizziesarah"
-    #token = "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"
+def getCorrectnessScore(username, token, owner, name):
+    # username = "lizziesarah"
+    # token = "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"
     header = {'Authorization': 'Bearer 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'}
 
     owner = '"' + f"{owner}" + '"'
@@ -73,6 +75,7 @@ def getCorrectnessScore(username, token, owner, name) :
         return 1
     else:
         return 0
+
 
 # measures responsive maintainers score by seeing if there have been commits within the last year (0 or 1)
 def getResponsiveMaintainersScore(username, token, owner, name):
@@ -108,8 +111,9 @@ def getResponsiveMaintainersScore(username, token, owner, name):
     if numCommits > 1:
         rm_score = 1
 
-    #print(f"Responsive Maintainers: {rm_score}")
-    return(rm_score)
+    # print(f"Responsive Maintainers: {rm_score}")
+    return (rm_score)
+
 
 def getLicenseScore(name, owner, file):
     file_pointer = open(file, "r")
@@ -119,7 +123,7 @@ def getLicenseScore(name, owner, file):
         split = (line.split(" "))
         url = split[0]
         score = split[1].split('\n')
-        #score = split[1].split('\n')
+        # score = split[1].split('\n')
         if url[8] == 'w':
             if url[30:] == name:
                 return float(score[0])
@@ -132,6 +136,7 @@ def getLicenseScore(name, owner, file):
 
             if o == owner:
                 return float(score[0])
+
 
 def getRampUpScore(name, owner, file):
     file_pointer = open(file, "r")
@@ -146,36 +151,63 @@ def getRampUpScore(name, owner, file):
         if o == owner:
             return float(score[0])
 
-
-
-
-def finalScore(bf, lc, cr, ru, rm, owner_url, outfile):
-    score = (bf*4+cr*3+ru*2+rm*1) / 14
+def calcFinalScore(bf, lc, cr, ru, rm, owner_url):
+    score = (bf * 4 + cr * 3 + ru * 2 + rm * 1) / 14
     score *= lc
     score_truncated = round(score, 3)
+    return score_truncated
+
+
+def writeFinalScore(arr, score_truncated, owner_url, outfile):
+    '''
+    score = (bf * 4 + cr * 3 + ru * 2 + rm * 1) / 14
+    score *= lc
+    score_truncated = round(score, 3)
+    '''
+
     outfile_pointer = open(outfile, "a")
-    
-    url = '"'+'URL'+'"'
-    net = '"'+'NET_SCORE'+'"'
-    rampup = '"'+'RAMP_UP_SCORE'+'"'
-    correct = '"'+'CORRECTNESS_SCORE'+'"'
-    busfactor = '"'+'BUS_FACTOR_SCORE'+'"'
-    respmaint = '"'+'RESPONSIVE_MAINTAINER_SCORE'+'"'
-    licen = '"'+'LICENSE_SCORE'+'"'
-    outfile_pointer.write("{"+f"{url}:{owner_url}, {net}:{score}, {rampup}:{ru}, {correct}:{cr}, {busfactor}:{bf}, {respmaint}:{rm}, {licen}:{lc}"+"}\n")
+    url = '"' + 'URL' + '"'
+    net = '"' + 'NET_SCORE' + '"'
+    rampup = '"' + 'RAMP_UP_SCORE' + '"'
+    correct = '"' + 'CORRECTNESS_SCORE' + '"'
+    busfactor = '"' + 'BUS_FACTOR_SCORE' + '"'
+    respmaint = '"' + 'RESPONSIVE_MAINTAINER_SCORE' + '"'
+    licen = '"' + 'LICENSE_SCORE' + '"'
+    # ru, cr, bf, rm, lc
+    ru = arr[0]
+    cr = arr[1]
+    bf = arr[2]
+    rm = arr[3]
+    lc = arr[4]
+    outfile_pointer.write("{" + f"{url}:{owner_url}, {net}:{score_truncated}, {rampup}:{ru}, {correct}:{cr}, {busfactor}:{bf}, {respmaint}:{rm}, {licen}:{lc}" + "}\n")
     outfile_pointer.close()
-    return score
+
 
 
 if __name__ == '__main__':
     owners_and_names = {}
-    owners_and_names, owners_and_urls = readFile(urlfile='cloning_repos/git_urls.txt')
+    urls_and_final_scores = {}
+    urls_ranked_by_score = {}
+    attributes_of_url = {}
+    #owners_and_names, owners_and_urls = readFile(urlfile='cloning_repos/git_urls.txt')
+    owners_and_names, owners_and_urls = readFile(urlfile='urlfile_actual.txt')
     for owner in owners_and_names:
-        cr = getCorrectnessScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
-        rm = getResponsiveMaintainersScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
-        bf = getBusFactorScore(username='lizziesarah', token='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', owner=owner, name=owners_and_names[owner])
+        cr = getCorrectnessScore(username='lizziesarah', token='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', owner=owner,
+                                 name=owners_and_names[owner])
+        rm = getResponsiveMaintainersScore(username='lizziesarah', token='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',
+                                           owner=owner, name=owners_and_names[owner])
+        bf = getBusFactorScore(username='lizziesarah', token='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', owner=owner,
+                               name=owners_and_names[owner])
         lc = getLicenseScore(name=owners_and_names[owner], owner=owner, file='license.txt')
         ru = getRampUpScore(name=owners_and_names[owner], owner=owner, file='rampup_time.txt')
-        finalScore(bf=bf, cr=cr, rm=rm, lc=lc, ru=ru, owner_url=owners_and_urls[owner], outfile='outfile.txt')
+
+        final_score = calcFinalScore(bf=bf, cr=cr, rm=rm, lc=lc, ru=ru, owner_url=owners_and_urls[owner])
+        # url, ru, cr, bf, rm, lc
+        urls_and_final_scores[owners_and_urls[owner]] = final_score
+        attributes_of_url[owners_and_urls[owner]] = [ru, cr, bf, rm, lc]
+
+    urls_ranked_by_score = dict(sorted(urls_and_final_scores.items(), key= lambda x:x[1], reverse=True))
+    for url in urls_ranked_by_score:
+        writeFinalScore(arr=attributes_of_url[url], score_truncated=urls_ranked_by_score[url], owner_url=url, outfile='outfile.txt')
 
 
