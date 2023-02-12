@@ -9,8 +9,11 @@ async function FetchGithubRepo(owner:string, repo:string) {
     const res = await fetch(end);
     const data = await res.json();
     const url = "https://github.com/" + owner + "/" + repo
+
+    // These are set for outputting to the file that the final python file reads
     let newline = "\n"
     let space = " ";
+
     try {
         var score = CheckCompatibility(data['license']['key'])
         //var new_score = score.toFixed(1)
@@ -93,4 +96,5 @@ function CheckCompatibility(license:string) {
     return score
 }
 
+// Get the argument that tells you where the text file is and use it to run the program on
 RegexLink(process.argv.slice(2)[0])
