@@ -1,5 +1,5 @@
 if [[ -f $1 ]]; then 
-    node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1 && python3 ./cloning_repos/github_query_clone.py && python3 compiledqueries.py && cat outfile.txt && rm ./cloning_repos/git_urls.txt && rm -r -f ./cloning_repos/cloned_repo* && rm license.txt && rm rampup_time.txt && echo "./run $1 ----> running software on a text file of urls" >> logs/logfile.log && rm outfile.txt && export LOG_LEVEL=1 && export LOG_FILE="logs/logfile.log"; 
+    > outfile.txt && node ./restapi/restapi.js $1 && node ./cloning_repos/convert_to_git.js $1 && python3 ./cloning_repos/github_query_clone.py && python3 compiledqueries.py && cat outfile.txt && rm ./cloning_repos/git_urls.txt && rm -r -f ./cloning_repos/cloned_repo* && rm license.txt && rm rampup_time.txt && echo "./run $1 ----> running software on a text file of urls" >> logs/logfile.log && export LOG_LEVEL=1 && export LOG_FILE="logs/logfile.log"; 
 elif [[ $1 == 'install' ]]; then 
     npm install typescript && npm install ts-node && npm install octokit && npm install fs && pip install requests && pip install gitpython && pip install DateTime && npm install node-fetch@2
     echo ''
@@ -16,6 +16,7 @@ elif [[ $1 == 'test' ]]; then
     echo  Coverage: -1
     echo $equiv / 21 test cases passed. -1 Line coverage achieved;
     echo "./run test  ----> comparing expected output file to output file, based on urls_for_test.txt" >> logs/logfile.log
+    > outfile.txt
     export LOG_LEVEL=1
     export LOG_FILE="logs/logfile.log";
 else 
