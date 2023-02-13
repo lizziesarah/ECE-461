@@ -96,7 +96,6 @@ function FetchNPMRepo(name) {
                     newline = "\n";
                     space = " ";
                     try {
-                        console.log(data['license']);
                         score = CheckCompatibility(data['license']);
                         (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
