@@ -5,7 +5,9 @@ elif [[ $1 == 'install' ]]; then
     echo ''
     echo 'All dependencies installed!';
 elif [[ $1 == 'build' ]]; then
-    ./restapi/restapi.ts && ./cloning_repos/convert_to_git.ts
+    ./restapi/restapi.ts && ./cloning_repos/convert_to_git.ts && export LOG_FILE="logs/logfile.log";
+elif [[ $1 == 'test' ]]; then
+    ./check_outfile
 else 
     echo "Error: Not a supported command, here are a list of commands:"
     echo "-- ./run install: Installs all dependencies to run the software, python modules, nodejs modules, and typescript modules"

@@ -157,7 +157,7 @@ def getRampUpScore(name, owner, file):
             return float(score[0])
 
 def calcFinalScore(bf, lc, cr, ru, rm, owner_url):
-    score = (bf * 4 + cr * 3 + ru * 2 + rm * 1) / 14
+    score = (bf * 4 + cr * 3 + ru * 2 + rm * 1) / 10
     score *= lc
     score_truncated = round(score, 3)
     return score_truncated
