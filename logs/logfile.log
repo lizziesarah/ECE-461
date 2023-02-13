@@ -1,2 +1,6 @@
 ./run test_folder/URL_FILE.txt ----> running software on a text file of urls
 ./run test_folder/URL_FILE.txt ----> running software on a text file of urls
+ERROR: Unrecognized command in Command Line, see stdout for details
+./run install ----> 8 Dependencies installed: 
+                    ts-node, typescript, octokit, fs, requests, gitpython, DateTime, node-fetch v2
+./run build ----> compiling typescript files to javascript
