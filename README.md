@@ -61,7 +61,7 @@ To run the tests, write the following in terminal:
     
     ./run install
     ./run build
-    ./run URL_FILE
+    ./run test_modules/urls_for_test.txt
     ./run test
 
 ### Sample Tests
@@ -77,6 +77,8 @@ The sample tests are a selection of different repository URLs that are then push
     for the Code of Conduct
   - [Creative Commons](https://creativecommons.org/) - Used to choose
     the license
+  - [GPL Compatible Licenses](https://gplv3.fsf.org/wiki/index.php/Compatible_licenses) - Used for License Compatibility
+  - [GNU Operating System](https://www.gnu.org/licenses/license-list.en.html) - Used for License Compatibility
 
 ## Authors
 
