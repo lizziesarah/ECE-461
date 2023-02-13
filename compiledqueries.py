@@ -59,7 +59,6 @@ def getBusFactorScore(owner, name):
 # measures correctness score by seeing how many users have starred a repository (1 if more than 100 stars, else 0)
 def getCorrectnessScore(owner, name):
     # username = "lizziesarah"
-    # token = "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"
 
     owner = '"' + f"{owner}" + '"'
     name = '"' + f"{name}" + '"'
