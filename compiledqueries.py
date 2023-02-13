@@ -33,7 +33,6 @@ def readFile(urlfile):
 
 def getBusFactorScore(owner, name):
     # username = "lizziesarah"
-    # token = "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"
 
     owner = '"' + f"{owner}" + '"'
     name = '"' + f"{name}" + '"'
