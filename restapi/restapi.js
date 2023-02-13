@@ -96,9 +96,8 @@ function FetchNPMRepo(name) {
                     newline = "\n";
                     space = " ";
                     try {
+                        console.log(data['license']);
                         score = CheckCompatibility(data['license']);
-                        //var new_score = score.toFixed(1)
-                        //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
                         (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
                                 throw (err);
@@ -106,8 +105,6 @@ function FetchNPMRepo(name) {
                     }
                     catch (error) {
                         score = CheckCompatibility('N/A');
-                        //var new_score = score.toFixed(1)
-                        //writeFileSync("output.txt", url.concat(space.toString(), new_score.toString(), newline.toString()))
                         (0, fs_2.appendFile)("license.txt", url.concat(space.toString(), score.toString(), newline.toString()), function (err) {
                             if (err)
                                 throw (err);
@@ -144,7 +141,7 @@ function CheckCompatibility(license) {
     // If its listed as other, that means that there is a license, but not explicitly stated within the repository and is under a readme.
     // We were not able to regex readme, so we are assuming that lgpl is compatible as it is more common than not, compatible with licenses
     var incompatible = ['afl-3.0', 'cc', 'cc0-1.0', 'cc-by-4.0', 'epl-1.0', 'epl-2.0', 'agpl-3.0', 'postgresql', 'N/A'];
-    var compatible = ['artistic-2.0', 'bsl-1.0', 'bsd-2-clause', 'bsd-3-clause', 'bsd-3-clause-clear', 'mit', 'MIT', 'wtfpl', 'gpl', 'gpl-2.0', 'gpl-3.0', 'lgpl', 'lgpl-2.1', 'lgpl-3.0', 'isc', 'lppl-1.3c', 'ms-pl', 'mpl-2.0', 'osl-3.0', 'ofl-1.1', 'unlicense', 'zlib', 'ncsa', 'other', 'apache-2.0'];
+    var compatible = ['artistic-2.0', 'bsl-1.0', 'bsd-2-clause', 'bsd-3-clause', 'BSD-3-Clause', 'Apache-2.0', 'BSD-2-Clause', 'Unlicense', 'bsd-3-clause-clear', 'mit', 'MIT', 'wtfpl', 'gpl', 'gpl-2.0', 'gpl-3.0', 'lgpl', 'lgpl-2.1', 'lgpl-3.0', 'isc', 'lppl-1.3c', 'ms-pl', 'mpl-2.0', 'osl-3.0', 'ofl-1.1', 'unlicense', 'zlib', 'ncsa', 'other', 'apache-2.0', 'ISC'];
     // These lists will now compared with the license passed in the parameter to see it is compatible
     var score = 0;
     if (compatible.includes(license)) {
