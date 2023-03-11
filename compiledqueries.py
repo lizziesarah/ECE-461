@@ -182,7 +182,7 @@ def writeFinalScore(arr, score_truncated, owner_url, outfile):
     bf = arr[2]
     rm = arr[3]
     lc = arr[4]
-    outfile_pointer.write("{" + f"{url}:{owner_url}, {net}:{score_truncated}, {rampup}:{ru}, {correct}:{cr}, {busfactor}:{bf}, {respmaint}:{rm}, {licen}:{lc}" + "}\n")
+    outfile_pointer.write("{" + f"{url}:\"{owner_url}\", {net}:{score_truncated}, {rampup}:{ru}, {correct}:{cr}, {busfactor}:{bf}, {respmaint}:{rm}, {licen}:{lc}" + "}\n")
     outfile_pointer.close()
 
 
