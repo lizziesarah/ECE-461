@@ -4,7 +4,11 @@ import os
 
 
 # https://github.com/octocat/Hello-World
-token = os.environ['GITHUB_TOKEN']
+try:
+    token = os.environ['GITHUB_TOKEN']
+except KeyError:
+    print("No Github token environment variable set")
+    
 header = {'Authorization': 'Bearer {}'.format(token)}
 
 
