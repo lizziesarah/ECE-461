@@ -1,6 +1,7 @@
 import git
 import os
 from os.path import exists
+import shutil
 
 def clone_repo():
     n = 0
@@ -11,6 +12,8 @@ def clone_repo():
         url = url.strip()
         n += 1
         new_dir_name = "cloning_repos/cloned_repo{}".format(n)
+        if os.path.exists(new_dir_name):
+            shutil.rmtree(new_dir_name, ignore_errors=False, onerror=None)
         os.mkdir(new_dir_name)
         repo = git.Repo.clone_from(url, new_dir_name)
         readme_exists = exists("{}/README.md".format(new_dir_name))
